@@ -1,7 +1,8 @@
 # XSS-CSRF-Vuln-Example
 This was Lab 4 of Boston Universities EC558 Network Security Class taught by Dr.Sharon Goldberg
-
-
+<br><br>
+**You can find Questions in the Lab4.pdf In this git directory.**
+<br><br>
 **2.0 (csrf 0.html) :**  In order to execute this attack I use a Iframe and a form submission. The Iframe hosts the other page within this page so it gets by the Cross Origin Request Policy that can be annoying. Using some Jquery I also hide this, so there is no evidence of the attack. The form we submit contains all the information about login that would be needed such as attack password, username, and we pass the security level settings as well.
 <br><br>
 **2.1 (csrf 1.html) :** This is like a nested attack, we use xss exploit to run code that retrieves the token needed then post it making it a csrf, because we force the user to login as the attacker. When the webpage opens it executes a search query that runs my malicious code. I accomplish this by using a function called get cookie() that I found in stackoverflow, which is referenced above, to get the token we need. Once I have that token, I link jquery to make an ajax post request that logs in the user as to the attacker account passing in the token making it valid. I also use an iframe to execute this and using some Jquery I also hide this, so there is no evidence of the attack.
