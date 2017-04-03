@@ -1,5 +1,14 @@
 # XSS-CSRF-Vuln-Example
 This was Lab 4 of Boston Universities EC558 Network Security Class taught by Dr.Sharon Goldberg
+
+## Demo
+Visit this website to view demo of this in action.
+http://ksparakis.github.io/XSS-CSRF-Vuln-Examples
+
+## Vulnerable Web Server
+I provide the vulnerable web server code in **vul_website.zip** If you want to go ahead and run this locally. 
+
+## Solutions Explained
 <br><br>
 **You can find Questions in the Lab4.pdf In this git directory.**
 <br><br>
